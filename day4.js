@@ -18,8 +18,33 @@ function passphraseValid(data) {
   return rows.length - numOfInvalid;
 }
 
+function passphraseAnaValid(data) {
+  const rows = data.split("\n"); // array of each row
+  const numOfInvalid = rows.reduce((acc, row) => {
+    // number of invalid rows
+    const passwords = row.split(" "); // each word in the row
+    const sorted = passwords.map(password =>
+      password
+        .split("")
+        .sort()
+        .join()
+    );
+    const matches = sorted.filter((password, i) => {
+      // how many matches there are
+      const restOfPasswords = sorted.slice(++i, sorted.length); // all passwords after the one we are on
+      if (restOfPasswords.indexOf(password) > -1) return true;
+      else return false;
+    });
+
+    if (matches.length > 0) return ++acc;
+    else return acc;
+  }, 0);
+
+  return rows.length - numOfInvalid;
+}
+
 console.log(
-  passphraseValid(`kvvfl kvvfl olud wjqsqa olud frc
+  passphraseAnaValid(`kvvfl kvvfl olud wjqsqa olud frc
 slhm rdfm yxb rsobyt rdfm
 pib wzfr xyoakcu zoapeze rtdxt rikc jyeps wdyo hawr xyoakcu hawr
 ismtq qwoi kzt ktgzoc gnxblp dzfayil ftfx asscba ionxi dzfayil qwoi
