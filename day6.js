@@ -3,20 +3,47 @@ function blockShift(data) {
   let dataArr = dataArrStr.map(num => Number(num));
   let seenArr = [];
   let finalCount = 0;
-  while (seenArr.indexOf(dataArr) < 0) {
-    seenArr.push(dataArr.slice());
+  let again = "";
+  while (seenArr.indexOf(dataArr.slice().join(" ")) < 0) {
+    console.log(dataArr);
+    seenArr.push(dataArr.slice().join(" "));
     finalCount++;
     let max = getMax(dataArr);
-    let indexOfMax = dataArr.indexOf(max) + 1;
+    let indexOfMax = dataArr.indexOf(max);
     let count = 0;
-    dataArr[dataArr.indexOf(max)] = 0;
-    while (count <= max) {
-      if (indexOfMax === dataArr.length - 1) indexOfMax = 0;
+    dataArr[indexOfMax] = 0;
+    if (indexOfMax === dataArr.length - 1) indexOfMax = 0;
+    else indexOfMax++;
+    while (count < max) {
+      if (indexOfMax === dataArr.length) indexOfMax = 0;
       dataArr[indexOfMax] += 1;
-      ++indexOfMax;
+      indexOfMax++;
       count++;
     }
   }
+
+  again = dataArr.slice().join(" ");
+  seenArr = [];
+  finalCount = 0;
+  while (seenArr.indexOf(again) < 0) {
+    console.log(dataArr);
+    finalCount++;
+    let max = getMax(dataArr);
+    let indexOfMax = dataArr.indexOf(max);
+    let count = 0;
+    dataArr[indexOfMax] = 0;
+    if (indexOfMax === dataArr.length - 1) indexOfMax = 0;
+    else indexOfMax++;
+    while (count < max) {
+      if (indexOfMax === dataArr.length) indexOfMax = 0;
+      dataArr[indexOfMax] += 1;
+      indexOfMax++;
+      count++;
+    }
+
+    seenArr.push(dataArr.slice().join(" "));
+  }
+
   return finalCount;
 }
 
